@@ -5,5 +5,6 @@ export default function Home() {
         Content goes here
       </main>
     </div>
+    
   );
 }

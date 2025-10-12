@@ -1,7 +1,7 @@
 
-import { describe, it, expect } from 'vitest';
+import DrawLayout from '@/app/draw/layout';
 import { render } from '@testing-library/react';
-import DrawLayout from '../layout';
+import { describe, expect, it } from 'vitest';
 
 describe('DrawLayout', () => {
   it('should render children and a heading', () => {

@@ -14,9 +14,22 @@ vi.mock('@google/genai', () => {
 });
 
 describe('sendImage', () => {
-  it('should send image and text to the AI', async () => {
+  it('should send image and text to the AI and return html', async () => {
     const { mockGenerateContent } = await import('@google/genai');
-    mockGenerateContent.mockResolvedValue({ response: { text: () => 'mocked response' } });
+    const htmlContent = '<h1>Hello</h1>';
+    mockGenerateContent.mockResolvedValue({
+      candidates: [
+        {
+          content: {
+            parts: [
+              {
+                text: `\`\`\`html\n${htmlContent}\n\`\`\``,
+              },
+            ],
+          },
+        },
+      ],
+    });
 
     const blob = new Blob([''], { type: 'image/jpeg' });
     const contents = {
@@ -25,7 +38,7 @@ describe('sendImage', () => {
       width: 100,
     };
 
-    await sendImage(contents);
+    const result = await sendImage(contents);
 
     expect(mockGenerateContent).toHaveBeenCalledWith({
       model: 'gemini-2.5-flash',
@@ -44,5 +57,8 @@ describe('sendImage', () => {
         },
       },
     });
+
+    expect(result.success).toBe(true);
+    expect(result.html).toBe(htmlContent);
   });
 });

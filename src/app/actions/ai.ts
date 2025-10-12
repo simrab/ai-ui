@@ -39,7 +39,28 @@ export default async function sendImage(contents: {
         },
       },
     });
-    console.log(response);
+    
+    // Extract HTML content from the response
+    let htmlContent = response.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    // Remove markdown code block markers
+    if (htmlContent) {
+      htmlContent = htmlContent.replace(/^```html\n?/, '').replace(/\n?```$/, '');
+    }
+    
+    console.log(htmlContent);    
+
+    if (htmlContent) {
+      return {
+        success: true,
+        html: htmlContent,
+      };
+    } else {
+      return {
+        success: false,
+        message: "No HTML content found in AI response",
+      };
+    }
   } catch (err: any) {
     return {
       success: false,

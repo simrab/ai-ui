@@ -1,7 +1,7 @@
 
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
-import RootLayout from '../layout';
+import RootLayout from '../app/layout';
 
 vi.mock('next/font/google', () => ({
   Geist: () => ({ className: 'geist-sans' }),
@@ -12,7 +12,7 @@ describe('RootLayout', () => {
   it('should render children', () => {
     const { getByText } = render(
       <RootLayout>
-        <div>Child Content</div>
+        <span>Child Content</span>
       </RootLayout>
     );
 

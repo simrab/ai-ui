@@ -1,6 +1,6 @@
 
-import { describe, it, expect } from 'vitest';
-import { options } from '../drawerOptions';
+import { options } from '@/app/utils/drawerOptions';
+import { describe, expect, it } from 'vitest';
 
 describe('drawerOptions', () => {
   it('should have the correct properties', () => {

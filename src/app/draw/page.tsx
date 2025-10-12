@@ -1,12 +1,17 @@
 "use client";
 
-import { getSnapshot, Tldraw, useEditor } from "tldraw";
+import ModalHtml from "@/components/modal-htlml";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Tldraw, useEditor } from "tldraw";
 import "tldraw/tldraw.css";
-import { options } from "../utils/drawerOptions";
 import sendImage from "../actions/ai";
-
+import { options } from "../utils/drawerOptions";
 export function Toolbar() {
   const editor = useEditor();
+  const [html, setHtml] = useState<string | null>(null);
+  const [open, setOpen] = useState<boolean>(false);
+
 
   async function handleSendImage() {
     try {
@@ -17,18 +22,24 @@ export function Toolbar() {
         return;
       }
       const drawing = await editor.toImage([...shapeIds], { format: "jpeg" });
-      await sendImage(drawing);
+      const response = await sendImage(drawing);
+      if(response.html) {
+        setHtml(response.html);
+        setOpen(true);
+      }
     } catch (err: any) {
       throw new Error("error before sending image", err);
     }
   }
   return (
-    <button style={{ pointerEvents: "all" }} onClick={handleSendImage}>
+    <>
+    <Button style={{ pointerEvents: "all" }} onClick={handleSendImage}>
       Send image
-    </button>
+    </Button>
+    <ModalHtml html={html} open={open} setOpen={setOpen} />
+    </>
   );
 }
-
 export default function DrawPage() {
   return (
     <div className="fixed inset-0">
