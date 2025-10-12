@@ -33,8 +33,8 @@ export function Toolbar() {
   }
   return (
     <>
-    <Button style={{ pointerEvents: "all" }} onClick={handleSendImage}>
-      Send image
+    <Button className="mr-1 my-4" style={{ pointerEvents: "all" }} onClick={handleSendImage}>
+      Generate HTML
     </Button>
     <ModalHtml html={html} open={open} setOpen={setOpen} />
     </>
