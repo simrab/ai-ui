@@ -1,5 +1,5 @@
 
-import sendImage from '@/app/actions/ai';
+import convertImageToHtml from '@/app/actions/ai';
 import { Toolbar } from '@/app/draw/page';
 import ModalHtml from '@/components/modal-htlml';
 import { fireEvent, render, waitFor } from '@testing-library/react';
@@ -26,7 +26,7 @@ vi.mock('tldraw', async () => {
   };
 });
 
-const mockSendImage = sendImage as Mock;
+const mockSendImage = convertImageToHtml as Mock;
 const MockedModalHtml = ModalHtml as Mock;
 
 describe('Toolbar', () => {

@@ -1,5 +1,5 @@
 
-import { options } from '@/app/utils/drawerOptions';
+import { options } from '@/lib/drawerOptions';
 import { describe, expect, it } from 'vitest';
 
 describe('drawerOptions', () => {

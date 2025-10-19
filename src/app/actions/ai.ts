@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 function convertToBase64(blob: Blob, mimeType?: "jpg"): Promise<string> {
@@ -14,7 +15,7 @@ function convertToBase64(blob: Blob, mimeType?: "jpg"): Promise<string> {
 }
 
 // TODO: Improve typing
-export default async function sendImage(contents: {
+export default async function convertImageToHtml(contents: {
   blob: Blob;
   height: number;
   width: number;
