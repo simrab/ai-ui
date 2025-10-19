@@ -1,19 +1,14 @@
 import convertImageToHtml from "@/app/actions/ai";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useEditor } from "tldraw";
-import ModalHtml from "../modal-htlml";
 import { Button } from "../ui/button";
 
 export function Toolbar() {
-  const [html, setHtml] = useState<string | null>(null);
-  const [isOpen, setOpen] = useState(false);
   const [isPending, transition] = useTransition();
   const editor = useEditor();
 
   function handleConvertImageToHtml() {
-    transition(async () => 
-      convertImageToHtmlAction()
-    );
+    transition(async () => convertImageToHtmlAction());
   }
 
   async function convertImageToHtmlAction() {
@@ -27,11 +22,35 @@ export function Toolbar() {
       const drawing = await editor.toImage([...shapeIds], { format: "jpeg" });
       const response = await convertImageToHtml(drawing);
       if (response.html) {
-        setHtml(response.html);
-        setOpen(true);
+        transition(() => openHtmlInNewTab(response.html));
       }
-    } catch (err: any) {
-      throw new Error("error before sending image", err);
+    } catch (err: unknown) {
+      console.error("Error before sending image:", err);
+      throw new Error("error before sending image");
+    }
+  }
+
+  function openHtmlInNewTab(html: string | null) {
+    if (!html) {
+      console.error("No HTML content to display");
+      return;
+    }
+    const newWindow = window.open();
+    if (newWindow) {
+      newWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Generated HTML</title>
+        </head>
+        <body>
+          ${html}
+        </body>
+        </html>
+      `);
+      newWindow.document.close();
     }
   }
 
@@ -50,7 +69,6 @@ export function Toolbar() {
       >
         Generate HTML
       </Button>
-      <ModalHtml html={html} open={isOpen} setOpen={setOpen} />
     </>
   );
 }

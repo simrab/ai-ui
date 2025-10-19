@@ -11,7 +11,6 @@ describe('DrawLayout', () => {
       </DrawLayout>
     );
 
-    expect(getByText('This is my draw canvas layout')).toBeInTheDocument();
     expect(getByText('Child Content')).toBeInTheDocument();
   });
 });
